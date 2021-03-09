@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const { ModuleFederationPlugin } = require('webpack').container;
 
 module.exports = {
   entry: {
@@ -38,28 +39,35 @@ module.exports = {
     ],
   },
   output: {
-    publicPath: '/',
+    publicPath: 'auto',
     path: path.resolve(__dirname, './dist'),
     filename: 'script/[name].[contenthash].js',
     assetModuleFilename: 'asset/[hash][ext][query]',
   },
-  optimization: {
-    moduleIds: 'deterministic',
-    runtimeChunk: 'single',
-    splitChunks: {
-      cacheGroups: {
-        vendor: {
-          test: /[\\/]node_modules[\\/]/,
-          name: 'vendors',
-          chunks: 'all',
-        },
-      },
-    },
-  },
+  // optimization: {
+  //   moduleIds: 'deterministic',
+  //   runtimeChunk: 'single',
+  //   splitChunks: {
+  //     cacheGroups: {
+  //       vendor: {
+  //         test: /[\\/]node_modules[\\/]/,
+  //         name: 'vendors',
+  //         chunks: 'all',
+  //       },
+  //     },
+  //   },
+  // },
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: 'src/index.html',
+    }),
+    new ModuleFederationPlugin({
+      name: 'home',
+      // 引用 blog 的服务
+      remotes: {
+        blog: 'blog@http://localhost:8867/remoteEntry.js',
+      },
     }),
   ],
   resolve: {
