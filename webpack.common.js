@@ -64,10 +64,10 @@ module.exports = {
     }),
     new ModuleFederationPlugin({
       name: 'home',
-      // 引用 blog 的服务
       remotes: {
         blog: 'blog@http://localhost:8867/remoteEntry.js',
       },
+      shared: ['react', 'react-dom'],
     }),
   ],
   resolve: {
