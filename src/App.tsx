@@ -5,17 +5,19 @@ import './index.less';
 import Blog from './page/blog';
 import About from './page/about';
 
+declare const BASENAME: string;
+
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={BASENAME}>
       <Switch>
         <Route exact path="/">
           <Home />
         </Route>
-        <Route path="/blog">
+        <Route exact path="/blog">
           <Blog />
         </Route>
-        <Route path="/about">
+        <Route exact path="/about">
           <About />
         </Route>
       </Switch>
